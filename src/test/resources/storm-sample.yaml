@@ -1,0 +1,39 @@
+# topology definition
+# name to be used when submitting
+name: "storm-sample-topology"
+
+#components:
+#  - id: "columnFields"
+#    className: "backtype.storm.tuple.Fields"
+#    constructorArgs:
+#      - ["word"]
+
+# topology configuration
+# this will be passed to the submitter as a map of config options
+#
+config:
+  topology.workers: 1
+
+# spout definitions
+spouts:
+  - id: "SampleSpout"
+    className: "jp.co.storm.sample.Storm_Sample.spout.SampleSpout"
+    parallelism: 1
+    
+  - id: "TestWordSpout"
+    className: "org.apache.storm.testing.TestWordSpout"
+    parallelism: 1
+
+# bolt definitions
+
+bolts:
+  - id: "QuestionAddBolt"
+    className: "jp.co.storm.sample.Storm_Sample.bolt.QuestionAddBolt"
+    parallelism: 1
+
+streams:
+  - name: "" # name isn't used (placeholder for logging, UI, etc.)
+    from: "TestWordSpout"
+    to: "QuestionAddBolt"
+    grouping:
+      type: SHUFFLE
